@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React from "react"
 import { Styled } from "theme-ui"
 
 /**
@@ -6,11 +6,9 @@ import { Styled } from "theme-ui"
  */
 
 export default () => (
-  <Fragment>
-    This is where <Styled.a href="http://example.com/">your name</Styled.a>
-    {` `}
-    goes.
-    <br />
-    Or whatever, you make the rules.
-  </Fragment>
+  <>
+    Engenheiro Frontend na{" "}
+    <Styled.a href="https://linte.com.br">Linte_</Styled.a>. Amo aprender,
+    ensinar e conversar sobre tecnologia.
+  </>
 )
