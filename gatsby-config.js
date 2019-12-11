@@ -7,7 +7,7 @@ module.exports = {
   ],
   // Customize your site metadata:
   siteMetadata: {
-    title: `Blog do baú`,
+    title: `lucasviana.dev blog`,
     author: `Lucas Viana`,
     description: `Um blog sobre tecnologia, produtividade e cotidiano. Produzido e mantido por Lucas Viana © 2019`,
     social: [
