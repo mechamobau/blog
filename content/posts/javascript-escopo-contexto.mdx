@@ -1,0 +1,194 @@
+---
+title: JavaScript: Escopo X Contexto
+date: 2020-02-05
+---
+
+Existem conceitos no JS (JavaScript) que acabam sendo muito confundidos. Um deles que acaba sendo muito recorrente é diferenciar Escopo de Contexto. Este artigo é baseado nos vídeos da série _[What Makes Javascript Weird...and Awesome](https://www.youtube.com/playlist?list=PLoYCgNOIyGABI011EYc-avPOsk1YsMUe_)_ do canal do YouTube _[LearnCode.academy](https://www.youtube.com/learncodeacademy/).\_
+
+## Escopo
+
+Escopo tem a ver com acessibilidade de variáveis, seja dentro de _if's_, _for's_, funções e etc. Por exemplo, veja o trecho de código abaixo:
+
+```javascript
+var nome = "Lucas"
+```
+
+É uma simples declaração de variável. Digamos que o trecho acima esteja sendo executado dentro do browser. Variáveis declaradas no _root scope_ (escopo global) são atribuídas ao objeto global `window`. Se no browser eu executar `console.log(nome)` será exibido no `console`: "Lucas".
+
+As variáveis com um escopo maior, podem ser acessadas por escopos menores. O termo correto é _Parent scope_ para o escopo mais alto e para o escopo menor é _Child scope._ Porém isto não acontece inversamente, ou seja, váriaveis em escopos filhos não podem ser acessadas por escopos pai, veja o trecho a seguir:
+
+```javascript
+var nome = "Lucas"
+
+function declaraSobrenome() {
+  console.log(nome) // Lucas
+  var sobrenome = "Viana"
+}
+
+declaraSobrenome()
+
+console.log(`${nome} ${sobrenome}`) // Uncaught ReferenceError: sobrenome is not defined
+```
+
+Há uma coisa interessante com os escopos. Já que os escopos filho não podem ser acessados por escopos pai, eles podem sobrescrever os escopos-pai (O termo para isto é _name conflict_). Ou seja, o código abaixo é válido:
+
+```javascript
+var nome = "Lucas"
+
+function sobrescreveNome() {
+  var nome = "Jonas"
+  console.log(window.nome) // Lucas
+  console.log(nome) // Jonas
+}
+
+sobrescreveNome()
+
+console.log(nome) // Lucas
+```
+
+E para finalizar, analise o código abaixo e responda: o que será exibido como nome no console?
+
+```javascript
+var nome = "Lucas"
+
+function sobrescreveNome() {
+  var nome = "Jonas"
+}
+
+function sobrescreveNomeDenovo() {
+  nome = "Maria"
+}
+
+sobrescreveNome()
+sobrescreveNomeDenovo()
+
+console.log(nome) // O que será impresso no console?
+```
+
+Sim, você acertou. Será impresso "Maria". Isto acontece, pois antes do ES6 (onde temos diferentes formas de declarar variáveis com `let` e `const`) haviam muitos problemas com poluição do _Root scope_, já que uma declaração sem o `var` pode resultar em uma declaração global. Porém, faça o seguinte teste: rode o mesmo código do trecho anterior, porém com uma declaração `"use strict"` no topo do arquivo, você verá que não será possível sobrescrever o _Root scope_.
+
+## Contexto
+
+É ligado à palavra especial `this`. Em uma analogia, pensando em nosso mundo, o contexto nada mais é do que o "espaço" que determinada variável ocupa (variável no sentido mais amplo, podendo ser uma função também) no ambiente.
+
+Agora sendo um pouco mais o técnico, o `this` possui o mesmo comportamento do que qualquer outra variável, com a condição de que ele não pode ser mudado. Isto porque o `this` é alterado de outras formas que veremos a seguir.
+
+O this referencia a um objeto de contexto, sendo um objeto podemos ter acesso a suas propriedades. Por exemplo, utilizando-se do exemplo anterior digamos que temos função que exibe um nome e sobrenome como o código a seguir:
+
+```javascript
+var nome = "Lucas"
+var sobrenome = "Viana"
+
+function exibeNomeCompleto() {
+  return `${this.nome} ${this.sobrenome}`
+}
+
+console.log(exibeNomeCompleto()) // Lucas Viana
+```
+
+No ambiente de browsers, onde o JS pode ser executado, o contexto global para o `this` é a `window`. Como aprendemos na seção de Escopo, as variáveis globais são declaradas na `window` , portanto o `this` tem acesso a estas variáveis globais no exemplo anterior.
+
+Agora por exemplo, e se eu tiver um novo objeto que referencia o `this`? No código abaixo é possível ver isto acontecer:
+
+```javascript
+var nome = "Lucas"
+var sobrenome = "Viana"
+
+var Pessoa = {
+  nome: "José",
+  sobrenome: "Augusto",
+  exibeNomeCompleto: function() {
+    return `${this.nome} ${this.sobrenome}`
+  },
+}
+
+var exibeNomeCompleto = Pessoa.exibeNomeCompleto
+
+console.log(Pessoa.exibeNomeCompleto()) // José Augusto
+console.log(exibeNomeCompleto()) // Lucas Viana
+```
+
+E porque no exemplo anterior os nomes foram exibidos com valores diferentes? Isto acontece pois em `Pessoa` o contexto estava contido em `Pessoa` , porém quando foi atribuído a uma variável no _Root_ _Scope_ o contexto mudou para `Window` .
+
+Como dito anteriormente, **não é possível** mudar o valor de `this`, porém é possível alterar o contexto de alguma variável, existem 3 métodos para alterar o contexto de algo, eles são: `call`, `apply` e `bind`.
+
+### Call
+
+O método `call` é responsável por executar uma função e em seu primeiro parâmetro é passado o contexto que será aplicado nesta execução, por exemplo:
+
+```javascript
+var nome = "Lucas"
+var sobrenome = "Viana"
+
+var Pessoa = {
+  nome: "José",
+  sobrenome: "Augusto",
+  exibeNomeCompleto: function() {
+    return `${this.nome} ${this.sobrenome}`
+  },
+}
+
+console.log(Pessoa.exibeNomeCompleto.call(window)) // Lucas Viana
+```
+
+O método `call` aceita outros parâmetros que serão utilizados pela função executada, por exemplo:
+
+```javascript
+var nome = "Lucas"
+var sobrenome = "Viana"
+
+var Pessoa = {
+  nome: "José",
+  sobrenome: "Augusto",
+  saudacoes: function(cidade, sigla) {
+    return `Olá ${this.nome} ${this.sobrenome}, bem-vindo a ${cidade}/${sigla}`
+  },
+}
+
+console.log(Pessoa.saudacoes.call(window, "São Vicente", "SP")) // Olá Lucas Viana, bem-vindo a São Vicente/SP
+```
+
+### Apply
+
+O método `apply` é basicamente a mesma coisa que o método `call`, com a única diferença que ele aceita apenas dois parâmetros (no método `call` você pode passar qualquer número de parâmetros) sendo o primeiro o contexto em que será executada a função e o segundo um `array` com os parâmetros.
+
+A maioria das pessoas não entende a diferença entre os dois métodos (achando que servem para a mesma coisa, mas não). O método `apply` é útil no caso de você manipular dados previamente e querer os repassar para alguma função, no `call` você ficaria limitado em passar parâmetro a parâmetro os dados, já no `apply` você consegue manipular e passar diretamente para o método.
+
+```javascript
+var Calculadora = {
+  soma: function(...numeros) {
+    return numeros.reduce((acc, cur) => acc + cur, 0)
+  },
+}
+
+var numeros = Array(8)
+  .fill(1)
+  .map((_, index) => index + 1)
+
+Calculadora.soma(1, 1, 2) // 4
+Calculadora.soma.apply(window, numeros) // 36
+```
+
+### Bind
+
+O método bind é um pouco diferente, mas nem tanto. A diferença é que ele não executa a função, porém retorna sua declaração contendo o contexto passado a ele como parâmetro. Usando um dos exemplos anteriores, temos:
+
+```javascript
+var nome = "Jorge"
+var sobrenome = "Luiz"
+
+var Pessoa = {
+  saudacoes: function(cidade, sigla) {
+    return `Olá ${this.nome} ${this.sobrenome}, bem-vindo a ${cidade}/${sigla}`
+  },
+}
+
+var saudarAlguem = Pessoa.saudacoes.bind(window)
+saudarAlguem("Salvador", "BA") // // Olá Jorge Luiz, bem-vindo a Salvador/BA
+```
+
+Espero que tenham gostado da explicação sobre a diferença entre Escopo e Contexto no JavaScript, se tiver alguma dúvida, comentário ou sugestão procure por @mechamobau no [Twitter](https://twitter.com/mechamobau) e no [GitHub](https://github.com/mechamobau).
+
+Lembrando que este maravilhoso blog encontra-se em código aberto no meu GitHub. Caso queira ver o código ou realizar alguma melhoria. Eu agradeço 😄
+
+Valeu meus queridos! ⚛️
