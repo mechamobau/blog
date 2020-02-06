@@ -5,12 +5,6 @@ module.exports = {
       options: {},
     },
     {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: "UA-157902376-1",
-      },
-    },
-    {
       resolve: `gatsby-plugin-gtag`,
       options: {
         trackingId: `UA-157902376-1`,
