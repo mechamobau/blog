@@ -8,11 +8,14 @@ module.exports = {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
         trackingId: "UA-157902376-1",
-        head: false,
-        pageTransitionDelay: 0,
-        sampleRate: 5,
-        siteSpeedSampleRate: 10,
-        cookieDomain: "blog.lucasviana.dev",
+      },
+    },
+    {
+      resolve: `gatsby-plugin-gtag`,
+      options: {
+        trackingId: `UA-157902376-1`,
+        head: true,
+        anonymize: false,
       },
     },
   ],
