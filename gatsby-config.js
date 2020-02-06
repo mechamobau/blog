@@ -4,6 +4,18 @@ module.exports = {
       resolve: `gatsby-theme-blog`,
       options: {},
     },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "UA-157902376-1",
+        head: true,
+        anonymize: true,
+        pageTransitionDelay: 0,
+        sampleRate: 5,
+        siteSpeedSampleRate: 10,
+        cookieDomain: "blog.lucasviana.dev",
+      },
+    },
   ],
   // Customize your site metadata:
   siteMetadata: {
