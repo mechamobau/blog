@@ -1,0 +1,182 @@
+---
+title: "Introdução a programação funcional em React ⚛️"
+date: 2020-02-15
+---
+
+import reactLifeCycleImage from "../assets/react-lifecycle.png"
+
+A programação funcional acaba auxiliando muito na forma de escrever código, isso porque ela possui alguns conceitos muito interessantes que podemos utilizar no dia a dia em React.
+
+### Declarativa ao invés de imperativa
+
+O primeiro deles é que utilizando a programação funcional, sua forma de implementação se torna muito mais declarativa (sendo assim mais fácil de entender) do que imperativa. Por exemplo, considerando um array `users` , digamos que eu queira pegar o nome de todos os brasileiros contidos neste array, então implemento uma função que recebe a lista de usuários e baseado no país eu retorno os nomes destes usuários, veja abaixo a diferença entre forma imperativa e declarativa:
+
+```javascript
+// Imperativa:
+function getUsersByCountry(users, countryName) {
+  let filteredUsers = []
+
+  for (let i = 0; i <= users.length - 1; i++) {
+    if (users[i].country === countryName) filteredUsers.push(users[i].name)
+  }
+
+  return filteredUsers
+}
+
+// Declarativa:
+const getUsersByCountry = (users, countryName) =>
+  users.reduce(
+    (names, user) =>
+      user.country === countryName ? [...names, user.name] : names,
+    []
+  )
+
+// getUsersByCountry(allUsers, "USA")
+```
+
+Em ambas as implementações você itera sobre o array, mas na forma declarativa você não precisa se preocupar com os índices deste array.
+
+Além disso o código fica mais fácil de entender, já que na forma declarativa você não existe essa "receitinha de bolo" que a forma imperativa fornece. Muito mais um "execute desta forma" do que um "faça isso, isso e isso".
+
+### Funções puras
+
+O segundo conceito que programação funcional oferece é a escrita de funções puras (_Pure Functions_), as funções puras são aquelas que dado uma entrada produzem **sempre** a mesma saída. Por exemplo, no livro [Mostly Adequate Guide do Professor Frisby](https://github.com/MostlyAdequate/mostly-adequate-guide) (cujo qual é muito interessante para se começar a estudar programação funcional) ele tem um bom exemplo de função pura:
+
+```javascript
+const numbers = [1, 2, 3, 4, 5]
+
+// puro
+numbers.slice(0, 3) // [1,2,3]
+
+numbers.slice(0, 3) // [1,2,3]
+
+numbers.slice(0, 3) // [1,2,3]
+
+// impuro
+numbers.splice(0, 3) // [1,2,3]
+
+numbers.splice(0, 3) // [4,5]
+
+numbers.splice(0, 3) // []
+```
+
+A vantagem de escrever funções puras é que elas não possuem dependência de dados. Ou seja, acabam sendo reutilizáveis para outros propósitos diferentes do que elas foram escritas, veremos isso mais a frente.
+
+### Cidadãos de primeira classe
+
+Podemos em algumas linguagens (em JS, por exemplo) guardar funções dentro de variáveis, operar sob o retorno de uma função, passar funções como argumentos de funções, retornar funções em funções e muitas outras utilizações. Isto que torna possível, por exemplo, o código abaixo:
+
+```javascript
+const doubleNumber = x => x * 2
+
+Math.sqrt(doubleNumber(doubleNumber(doubleNumber(2)))) // 4
+```
+
+### Currying
+
+Eu sei, você leu "Curry" e pensou naquele prato com curry que você comeu no restaurante indiano, mas não. Curry tem uma aplicação muito importante (mais do que temperar seu frango).
+
+Curry nada mais é que uma função que retorna uma função, ou seja, isto pode parecer pouco usual, mas vou te mostrar como isso te ajuda. Com funções curry, você pode dividir os parâmetros de suas funções. Por exemplo, você pode ter uma função capaz de retornar se um determinado valor é do tipo passado:
+
+```javascript
+const isTypeOf = type => value => typeof value === type
+```
+
+Mantendo o pensamento de funções puras, podemos ter uma função capaz de negar o retorno de uma função, por exemplo:
+
+```javascript
+const isNot = predicate => value => !predicate(value)
+```
+
+E com isso podemos "compôr" estas funções para, por exemplo, filtrar em um array elementos que não sejam `number`:
+
+```javascript
+;["Lucas", 3.1415, 123, 0].filter(isNot(isTypeOf("number"))) // ["Lucas"]
+```
+
+### Tá, mas afinal React possibilita isso?
+
+A primeira coisa que é importante deixar claro é que React não é puramente funcional, o conceito de imutabilidade em React não está muito enraizado, podendo um componente abrigar seu estado localmente ou ainda compartilhar este estado com outros componentes.
+
+## Então já que React não é funcional, porque eu deveria aprender funcional para utilizar em React?
+
+Apesar disso você consegue utilizar conceitos funcionais em seus componentes, compor funções e aumenta a legibilidade e reusabilidade do seu código como vimos anteriormente. Existem algumas bibliotecas que podem ser usadas para facilitar a escrita e composição de funções puras para JavaScript, elas são:
+
+- Ramda
+- FP-TS
+
+## HOCs + FP = ❤️
+
+Um bom exemplo de aplicação de programação funcional em React são os HOCs, eles acabam utilizando muitos conceitos de FP, um bom exemplo disto é o Redux. No Redux para que você consiga utilizar o estado global dentro de seus componentes é necessário "mapear" este estado para as props dos componentes, a função `connect` serve justamente para isto:
+
+```javascript
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps,
+  options
+)(MyComponent)
+```
+
+Como você pode perceber, o método `connect` nada mais é que uma `curry`
+
+## Hooks
+
+Bem, não é surpresa pra ninguém que podemos criar componentes de duas formas: _Class components_ e _Functional components._
+
+### Class components
+
+Até aproximadamente a versão 16.7 do React, era mais comum criarmos componentes visuais através de classes JS. Isto porque o ciclo do React se baseava nos métodos que estas classes possuíam. Resumindo o ciclo de vida de um componente, temos três grandes fases de um componente, um componente é montado, atualizado e desmontado, dentro destas fases temos os métodos responsáveis por tratar cada uma destas fases:
+
+<img
+  src={reactLifeCycleImage}
+  alt="Ciclo de vida de um componente React, a imagem possui três colunas sendo: Mounting, Updating e Unmounting respectivamente"
+/>
+
+Fonte: [https://www.codevoila.com/post/57/reactjs-tutorial-react-component-lifecycle](https://www.codevoila.com/post/57/reactjs-tutorial-react-component-lifecycle)
+
+Apesar disto parecer lógico, acabava trazendo muitos problemas como atualização forçada do contexto e re-renderizações desnecessárias dentro de um componente React (muito causado pela confusão de quais métodos utilizar dentro do ciclo). Tanto é que entre as versões 16.3 e 17 os métodos `componentWillMount`, `componentWillReceiveProps`, `componentWillUpdate` foram depreciados e removidos do React. [Existe um artigo muito interessante no Medium que explica bem esta depreciação e mudança no ciclo de vida do React](https://medium.com/@larymagal/novo-ciclo-de-vida-de-um-componente-react-o-que-mudou-13ac809ce540).
+
+E como o processo de montagem, atualização e desmontagem de componentes eram todos feitos pelos métodos herdados da classe `Component`, os componentes funcionais serviam apenas para exibição de elementos sem estado.
+
+### Functional Components
+
+Para trazer uma maior simplicidade e clareza na criação de componentes, na React Conf 2018, [Dan Abramov sobe ao palco apresentando uma nova forma de criar componentes funcionais: Os Hooks](https://www.youtube.com/watch?v=dpw9EHDh2bM).
+
+Os hooks servem justamente para trazer uma maior funcionalidade para componentes funcionais, adicionando uma camada intermediária entre as _props_ repassadas para o componentes e o JSX retornado por ele.
+
+O ciclo de vida dentro de um componente permanece o mesmo, porém com ressalvas. Antes para tratarmos o _Mounting_ tínhamos o `componentDidMount`, em componentes funcionais temos o _hook_ d efeito, e entre outros hooks que posso trazer como conteúdo em um próximo post.
+
+Os hooks podem abrigar regras de negócio. Uma vez precisei utilizar o `LocalStorage` com React e acabei percebendo que era muito repetitivo ter que declarar o `LocalStorage` dentro de um componente e ter que ficar sincronizando com estado do componente. Para isso não acontecer, [criei um hook que basta declarar a chave no hook e ele devolve o dado que contém dentro do `LocalStorage`](https://github.com/mechamobau/simplestorage). A única coisa que fiz foi utilizar do hook de estado para isso acontecer:
+
+```javascript
+import { useState } from "react"
+
+export const useStorage = (key: string) => {
+  const { storage = window.localStorage, placeholder } = options
+
+  const [value, setValue] = useState(() => {
+    const persistedValue = storage.getItem(key)
+
+    if (persistedValue === null) {
+      storage.setItem(key, placeholder)
+      return placeholder
+    }
+
+    return persistedValue
+  })
+
+  const setStorageValue = (newValue: string) => {
+    setValue(newValue)
+    storage.setItem(key, newValue)
+  }
+
+  return [value, setStorageValue]
+}
+```
+
+Portanto a criação de hooks nada mais são que utilizar outros hooks para compor o seu.
+
+Bem, então podemos ver que existem muitas formas de adicionarmos mais performance na nossa forma de trabalho. Nós como desenvolvedores, precisamos cada vez mais nos certificarmos de que, o que nós escrevemos pode ser melhorado sempre. O estudo de programação funcional é uma prova disto.
+
+Se você gostou deste post, não se esqueça de dar seu feedback! Você pode me encontrar como [@mechamobau](https://twitter.com/mechamobau) no Twitter ou no GitHub, e obrigado pelo interesse!
