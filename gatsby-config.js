@@ -10,6 +10,14 @@ module.exports = {
         anonymize: false,
       },
     },
+    {
+      resolve: "gatsby-plugin-robots-txt",
+      options: {
+        host: "https://blog.lucasviana.dev",
+        sitemap: "https://blog.lucasviana.dev/sitemap.xml",
+        policy: [{ userAgent: "*", allow: "/" }],
+      },
+    },
   ],
   // Customize your site metadata:
   siteMetadata: {
