@@ -1,9 +1,7 @@
 module.exports = {
   plugins: [
-    {
-      resolve: `gatsby-theme-blog`,
-      options: {},
-    },
+    `gatsby-plugin-sitemap`,
+    `gatsby-theme-blog`,
     {
       resolve: `gatsby-plugin-gtag`,
       options: {
@@ -18,6 +16,7 @@ module.exports = {
     title: `Blog do Lucas`,
     author: `Lucas Viana`,
     description: `Um blog sobre tecnologia, produtividade e cotidiano. Produzido e mantido por Lucas Viana © 2020`,
+    siteUrl: `https://blog.lucasviana.dev`,
     social: [
       {
         name: `twitter`,
