@@ -3,7 +3,7 @@ title: "JavaScript: Qual a diferença entre Escopo e Contexto?"
 date: 2020-02-05
 ---
 
-Existem conceitos no JS (JavaScript) que acabam sendo muito confundidos. Um deles que acaba sendo muito recorrente é diferenciar Escopo de Contexto. Este artigo é baseado nos vídeos da série [What Makes Javascript Weird...and Awesome](https://www.youtube.com/playlist?list=PLoYCgNOIyGABI011EYc-avPOsk1YsMUe_) do canal do YouTube [LearnCode.academy](https://www.youtube.com/learncodeacademy/).
+Alguns conceitos do JS (Javascript) são um pouco confusos para iniciantes. Um muito recorrente saber a diferença entre Escopo e Contexto. Este artigo é baseado nos vídeos da série [What Makes Javascript Weird...and Awesome](https://www.youtube.com/playlist?list=PLoYCgNOIyGABI011EYc-avPOsk1YsMUe_) do canal do YouTube [LearnCode.academy](https://www.youtube.com/learncodeacademy/).
 
 ## Escopo
 
@@ -15,7 +15,7 @@ var nome = "Lucas"
 
 É uma simples declaração de variável. Digamos que o trecho acima esteja sendo executado dentro do browser. Variáveis declaradas no _root scope_ (escopo global) são atribuídas ao objeto global `window`. Se no browser eu executar `console.log(nome)` será exibido no `console`: "Lucas".
 
-As variáveis com um escopo maior, podem ser acessadas por escopos menores. O termo correto é _Parent scope_ para o escopo mais alto e para o escopo menor é _Child scope._ Porém isto não acontece inversamente, ou seja, váriaveis em escopos filhos não podem ser acessadas por escopos pai, veja o trecho a seguir:
+As variáveis com um escopo maior, podem ser acessadas por escopos menores. O termo correto é _Parent scope_ (Escopo pai) para o escopo mais alto e para o escopo menor é _Child scope_(Escopo filho). Porém isto não acontece inversamente, ou seja, váriaveis em escopos filhos não podem ser acessadas por escopos pai, veja o trecho a seguir:
 
 ```javascript
 var nome = "Lucas"
