@@ -7,7 +7,6 @@ import { Styled } from "theme-ui"
 
 export default () => (
   <>
-    Engenheiro Frontend na{" "}
     <Styled.a href="https://linte.com.br">Linte_</Styled.a>. Amo aprender,
     ensinar e conversar sobre tecnologia.
   </>
