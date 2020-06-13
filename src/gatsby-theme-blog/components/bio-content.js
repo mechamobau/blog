@@ -6,8 +6,5 @@ import { Styled } from "theme-ui"
  */
 
 export default () => (
-  <>
-    <Styled.a href="https://linte.com.br">Linte_</Styled.a>. Amo aprender,
-    ensinar e conversar sobre tecnologia.
-  </>
+  <Styled.p>Amo aprender, ensinar e conversar sobre tecnologia.</Styled.p>
 )
