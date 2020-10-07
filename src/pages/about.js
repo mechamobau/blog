@@ -17,7 +17,11 @@ const About = (props) => {
       location={props.location}
       title={props.data.site.siteMetadata.title}
     >
-      <SEO title="Sobre mim" />
+      <SEO
+        title="Sobre mim"
+        description="O meu nome é Lucas Viana, mais conhecido como Baú. Sou nascido das
+          grandes terras do Chorão (aka. Santos/SP), ou seja um caiçara nato..."
+      />
       <main>
         <Styled.h1>Sobre mim</Styled.h1>
         <Styled.p

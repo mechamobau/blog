@@ -18,7 +18,11 @@ const Page404 = (props) => {
       location={props.location}
       title={props.data.site.siteMetadata.title}
     >
-      <SEO title="Página não encontrada - 404" />
+      <SEO
+        title="Página não encontrada - 404"
+        description="Parece que você está meio perdido, que tal você ler alguns dos meus
+          últimos posts?"
+      />
       <main>
         <Styled.h1>Página não encontrada - 404</Styled.h1>
         <Styled.p
