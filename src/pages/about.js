@@ -50,15 +50,12 @@ const About = (props) => {
         <Styled.p>
           Atualmente estou cursando Sistemas para Internet na Fatec Rubens Lara,
           onde faço parte de um grupo de pesquisas sobre a usabilidade do site
-          oficial da linguagem Haskell. Sou apaixonado desde pequeno por
-          computadores, isso devido ao fato de meu pai ter sido dono de uma lan
-          house na época do boom das lan houses. Vale ressaltar que claro, esta
-          lan house não existe mais rs.
+          oficial da linguagem Haskell.
         </Styled.p>
         <Styled.p>
           Sou apaixonado desde pequeno por computadores, isso devido ao fato de
           meu pai ter sido dono de uma lan house na época do boom das lan
-          houses. Vale ressaltar que claro, esta lan house não existe mais rs.
+          houses. Vale ressaltar que claro, esta lan house não existe mais.
         </Styled.p>
         <Styled.p>
           Se você quiser entrar em contato comigo, minha DM do{" "}
