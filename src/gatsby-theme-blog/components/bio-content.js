@@ -6,7 +6,7 @@ import React from "react"
 
 export default () => (
   <>
-    Me chamo Lucas Viana, mas pode me chamar de Baú! 20 anos, INTJ-T, Caiçara,
-    Dev Frontend, Fatecano e futuro podcaster, he/him.
+    Me chamo Lucas Viana, mas pode me chamar de Baú! 21 anos, INTJ-T, Caiçara,
+    Dev Frontend, ex-Fatecano e futuro podcaster, he/him.
   </>
 )

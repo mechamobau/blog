@@ -23,7 +23,7 @@ module.exports = {
   siteMetadata: {
     title: `Blog do Lucas`,
     author: `Lucas Viana`,
-    description: `Um blog sobre tecnologia, produtividade e cotidiano. Produzido e mantido por Lucas Viana © 2020`,
+    description: `Um blog sobre tecnologia, produtividade e cotidiano. Produzido e mantido por Lucas Viana (Baú) © 2021`,
     siteUrl: `https://blog.lucasviana.dev`,
     social: [
       {
